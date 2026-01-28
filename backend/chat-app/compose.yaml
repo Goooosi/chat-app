@@ -1,0 +1,28 @@
+services:
+
+  postgres:
+    image: postgres:latest
+    env_file:
+      - src/main/resources/.env
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: chatdb
+      POSTGRES_PASSWORD: ${PASSWORD}
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: springboot-app
+    depends_on:
+      - postgres
+    env_file:
+      - src/main/resources/.env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/chatdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: ${PASSWORD}
+    ports:
+      - "8080:8080"
+
