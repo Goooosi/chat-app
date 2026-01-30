@@ -11,21 +11,25 @@ import org.springframework.stereotype.Controller;
 public class ChatController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final MessageService messageService;
 
-    public ChatController(SimpMessagingTemplate simpMessagingTemplate) {
+    public ChatController(SimpMessagingTemplate simpMessagingTemplate, MessageService messageService) {
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.messageService = messageService;
     }
 
-    @MessageMapping("/group")
-    public Message receiveGroupMessage(@Payload Message message){
-        simpMessagingTemplate.convertAndSend("/group/" + message.getReceiverGroupId(), message);
-        return message;
-
-    }
+//    @MessageMapping("/group")
+//    public Message receiveGroupMessage(@Payload Message message){
+//        Message saved_message = messageService.save(message);
+//        simpMessagingTemplate.convertAndSend("/group/" + message.getReceiverGroupId(), message);
+//        return saved_message;
+//
+//    }
 
     @MessageMapping("/private-message")
     public Message receivePrivateMessage(@Payload Message message){
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverUser(), "/queue/private", message);
-        return message;
+        Message saved_message = messageService.save(message);
+        simpMessagingTemplate.convertAndSendToUser(message.getReceiverUser(), "/queue/private", saved_message);
+        return saved_message;
     }
 }

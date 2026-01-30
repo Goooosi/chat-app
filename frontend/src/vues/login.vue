@@ -15,7 +15,7 @@
     </form>
     <h2>{{ msg }}</h2>
 
-    <p class="create-account">Create Account</p>
+    <RouterLink to="/signup">signup</RouterLink>
     </div>
 </template>
 
@@ -28,7 +28,7 @@ let msg = ref('')
 const router = useRouter()
 
 async function login(){
-    const res = fetch('/api/auth/login', {
+    const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body : JSON.stringify({

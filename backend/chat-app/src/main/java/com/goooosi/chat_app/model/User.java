@@ -2,6 +2,7 @@ package com.goooosi.chat_app.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
@@ -22,6 +23,7 @@ public class User {
     @Column(unique = true)
     private String username;
     private String password;
+    @CreationTimestamp
     private LocalDate datejoined;
     private String Role;
 
