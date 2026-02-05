@@ -21,17 +21,18 @@ public class WebSocketListener {
 
     @EventListener
     public void connected(SessionConnectedEvent event){
-        StompHeaderAccessor stompHeaderAccessor = StompHeaderAccessor.wrap(event.getMessage());
-        Principal user = stompHeaderAccessor.getUser();
+        Principal user = StompHeaderAccessor.wrap(event.getMessage()).getUser();
         if(user != null){
-            onlineusers.put(stompHeaderAccessor.getHeader("simpSessionId").toString(), user.getName());
+            onlineusers.put(event.getMessage().getHeaders().get("simpSessionId").toString(), user.getName());
         }
     }
 
     @EventListener
     public void disconnected(SessionDisconnectEvent event){
-        onlineusers.remove(event.getSessionId());
-
+        Principal user = event.getUser();
+        if(user != null){
+            onlineusers.remove(event.getSessionId());
+        }
     }
 
     public Set<String> getOnlineUsers(){

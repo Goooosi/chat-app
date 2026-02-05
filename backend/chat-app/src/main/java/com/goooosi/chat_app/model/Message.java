@@ -23,7 +23,7 @@ public class Message {
     @Enumerated(EnumType.STRING)
     private TypeOfMessage type;
     private String receiverUser;
-//    private Long receiverGroupId;
+    private Long receiverGroupId;
     @Column(columnDefinition = "TEXT")
     private String message;
     @CreationTimestamp

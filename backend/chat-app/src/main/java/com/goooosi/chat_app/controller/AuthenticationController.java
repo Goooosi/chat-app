@@ -2,11 +2,9 @@ package com.goooosi.chat_app.controller;
 
 import com.goooosi.chat_app.model.User;
 import com.goooosi.chat_app.repository.UserRepository;
-import com.goooosi.chat_app.security.GeneralRes;
 import com.goooosi.chat_app.security.JWTutil;
 import com.goooosi.chat_app.security.JwtRes;
 import com.goooosi.chat_app.services.UserService;
-import com.goooosi.chat_app.util.JwtReq;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 
@@ -30,10 +31,6 @@ public class AuthenticationController {
         PasswordEncoder encoder;
         @Autowired
         JWTutil jwTutil;
-        @Autowired
-        GeneralRes generalRes;
-
-
 
     @PostMapping("/signup")
     public ResponseEntity<JwtRes> register(@RequestBody User user) {
@@ -65,14 +62,5 @@ public class AuthenticationController {
         String token = jwTutil.generateJWTToken(userDetails.getUsername());
         return ResponseEntity.ok(new JwtRes(token));
 
-    }
-    @PostMapping("/validate")
-    public boolean validate(@RequestHeader JwtReq token) {
-        return jwTutil.validateJwtToken(token.getToken().substring(7));
-    }
-
-    @PostMapping("/convert")
-    public String convert(@RequestHeader JwtReq token) {
-        return jwTutil.getUserFromToken(token.getToken().substring(7));
     }
 }
