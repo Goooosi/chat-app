@@ -2,7 +2,10 @@ package com.goooosi.chat_app.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDate;
 
 
@@ -22,7 +25,9 @@ public class User {
     @Column(unique = true)
     private String username;
     private String password;
-    private LocalDate datejoined;
-    private String Role;
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt = Instant.now();
+    @Enumerated(EnumType.STRING)
+    private TypeOfUser role;
 
 }

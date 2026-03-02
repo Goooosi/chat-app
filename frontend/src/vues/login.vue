@@ -15,31 +15,33 @@
     </form>
     <h2>{{ msg }}</h2>
 
-    <p class="create-account">Create Account</p>
+    <RouterLink to="/signup">Sign up</RouterLink>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 const username = ref('')
 const password = ref('')
 let msg = ref('')
 const router = useRouter()
 
 async function login(){
-    const res = fetch('/api/auth/login', {
+    const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body : JSON.stringify({
             username: username.value,
-            password: password.value
+            password: password.value,
+            role: 'USER'
         })
     })
     const data = await res.json()
 
     if(res.status === 200){
         localStorage.setItem('jwt', data['token'])
+        localStorage.setItem('username', username)
         router.push('/chats')
     } else {
         msg = 'Incorrect info'

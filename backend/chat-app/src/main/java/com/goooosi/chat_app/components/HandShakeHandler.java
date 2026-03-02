@@ -15,7 +15,6 @@ public class HandShakeHandler extends DefaultHandshakeHandler {
     @Override
     protected Principal determineUser(ServerHttpRequest serverHttpRequest, WebSocketHandler webSocketHandler, Map<String, Object> properties) {
         String username = (String) properties.get("username");
-
         if(username != null) {
             return new StompPrincipals(username);
         }

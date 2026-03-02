@@ -3,11 +3,13 @@ package com.goooosi.chat_app.security;
 import com.goooosi.chat_app.services.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -48,9 +50,12 @@ public class TokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
     private String parseJWT(HttpServletRequest request){
-        String header = request.getHeader("Authorization");
-        if((header != null) && header.startsWith("Bearer ")) {
-            return header.substring(7);
+        if(request.getCookies() != null) {
+            for(Cookie cookie: request.getCookies()){
+                if(cookie.getName().equals("jwt")) {
+                    return cookie.getValue();
+                }
+            }
         }
         return null;
     }

@@ -26,6 +26,6 @@ public class Message {
     private Long receiverGroupId;
     @Column(columnDefinition = "TEXT")
     private String message;
-    @CreationTimestamp
-    private LocalDateTime timesent;
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt = Instant.now();
 }

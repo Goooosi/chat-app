@@ -31,13 +31,15 @@ async function signup(){
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       username: username.value,
-      password: password.value
+      password: password.value,
+      role: 'USER'
     })
   })
 
   const data = await res.json()
   if(res.status === 200){
     localStorage.setItem('jwt', data['token'])
+    localStorage.setItem('username', username)
     router.push('/chats')
   } else {
     msg = 'Username is already taken.'

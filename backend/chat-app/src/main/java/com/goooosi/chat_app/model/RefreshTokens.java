@@ -1,31 +1,29 @@
 package com.goooosi.chat_app.model;
 
-
 import jakarta.persistence.*;
-import lombok.*;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.util.List;
+
+import lombok.*;
+
 
 @Entity
-@Table(name = "chat_group")
+@Table(name = "refresh_tokens")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupChat {
-
+public class RefreshTokens {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId", nullable = false)
+    private Long userId;
+    @Column(nullable = false, length = 512)
+    private String token;
+    @Column(nullable = false)
+    private Instant expiresAt;
     @Column(nullable = false, updatable = false)
     private Instant createdAt = Instant.now();
-
-    @ManyToMany
-    @JoinTable(name = "group_members", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> members;
 }
-
