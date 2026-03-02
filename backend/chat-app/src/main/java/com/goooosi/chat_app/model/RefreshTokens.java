@@ -6,6 +6,7 @@ import java.time.Instant;
 
 import lombok.*;
 
+import com.goooosi.chat_app.model.User;
 
 @Entity
 @Table(name = "refresh_tokens")
@@ -19,7 +20,7 @@ public class RefreshTokens {
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
-    private Long userId;
+    private User user;
     @Column(nullable = false, length = 512)
     private String token;
     @Column(nullable = false)
