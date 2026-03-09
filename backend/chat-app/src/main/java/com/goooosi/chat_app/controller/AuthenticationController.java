@@ -66,7 +66,7 @@ public class AuthenticationController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, accesscookie.toString())
                 .header(HttpHeaders.SET_COOKIE, refreshcookie.toString())
-                .body("Logged In");
+                .body(new JwtRes("Logged in"));
 
     }
 
@@ -87,7 +87,7 @@ public class AuthenticationController {
                 .maxAge(86400)
                 .sameSite("Lax")
                 .build();
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Logged In");
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(new JwtRes("Logged in"));
 
     }
     @PostMapping("/logout")

@@ -6,8 +6,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
-
 
 @Getter
 @Setter
@@ -26,7 +24,8 @@ public class User {
     private String username;
     private String password;
     @Column(nullable = false, updatable = false)
-    private Instant createdAt = Instant.now();
+    @CreationTimestamp
+    private Instant createdAt;
     @Enumerated(EnumType.STRING)
     private TypeOfUser role;
 

@@ -9,6 +9,10 @@ export default defineConfig({
     proxy: {
       '/api' : {
         target: 'http://localhost:8080',
+      },
+      '/websocket' : {
+        target: 'ws://localhost:8080/websocket',
+        ws: true,
       }
     }
   }
