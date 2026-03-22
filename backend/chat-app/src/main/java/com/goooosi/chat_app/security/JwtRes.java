@@ -1,15 +1,14 @@
 package com.goooosi.chat_app.security;
 
 
+import lombok.Getter;
 
+@Getter
 public class JwtRes {
-    private String token;
+    private String msg;
 
-    public JwtRes(String token){
-        this.token = token;
+    public JwtRes(String msg){
+        this.msg = msg;
     }
 
-    public String getToken(){
-        return token;
-    }
 }

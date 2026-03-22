@@ -38,11 +38,9 @@ async function signup(){
 
   const data = await res.json()
   if(res.status === 200){
-    localStorage.setItem('jwt', data['token'])
-    localStorage.setItem('username', username)
     router.push('/chats')
   } else {
-    msg = 'Username is already taken.'
+    msg.value = 'Username is already taken.'
   }
 }
 </script>

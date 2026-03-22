@@ -44,7 +44,7 @@ async function login(){
         localStorage.setItem('username', username)
         router.push('/chats')
     } else {
-        msg = 'Incorrect info'
+        msg.value = 'Incorrect info'
     }
 
 }

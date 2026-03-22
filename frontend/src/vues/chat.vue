@@ -15,15 +15,12 @@ onMounted(() => {
     const token = localStorage.getItem('jwt');
     console.log("WS token:", token)
     stompclient = new Client({
-        brokerURL: "/websocket",
+        brokerURL: "ws://localhost:8080/websocket?token=" + token,
         reconnectDelay: 3000,
         debug: msg => console.log(msg),
     })
-    stompclient.connectHeaders = {Authorization: "Bearer " + token}
     stompclient.onConnect = () => {stompclient.subscribe('/user/queue/private', (res) => {const msg = JSON.parse(res.body); console.log(msg)} )}
-    stompclient.onStompError = frame => { console.error("Broker error:", frame.headers["message"]); console.error("Details:", frame.body); 
-    stompclient.onWebSocketError = event => { console.error("WebSocket error:", event); }
-    };
+    stompclient.onStompError = frame => { console.error("Broker error:", frame.headers["message"]); console.error("Details:", frame.body); };
     stompclient.activate()
 })
 

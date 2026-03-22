@@ -18,9 +18,8 @@ public class RefreshTokens {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    @Column(nullable = false)
+    private String username;
     @Column(nullable = false, length = 512)
     private String token;
     @Column(nullable = false)
