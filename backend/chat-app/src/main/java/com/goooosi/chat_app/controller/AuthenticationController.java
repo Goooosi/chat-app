@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,7 +64,7 @@ public class AuthenticationController {
                 .httpOnly(true)
                 .secure(false)// remember to true this
                 .path("/")
-                .maxAge(60*10)
+                .maxAge(60*15)
                 .sameSite("Lax")
                 .build();
         String refreshToken = jwTutil.generateRefreshToken();
@@ -102,7 +103,7 @@ public class AuthenticationController {
                 .httpOnly(true)
                 .secure(false) // change this later
                 .path("/")
-                .maxAge(86400)
+                .maxAge(60*15)
                 .sameSite("Lax")
                 .build();
         String refreshToken = jwTutil.generateRefreshToken();
@@ -139,7 +140,7 @@ public class AuthenticationController {
                                     .httpOnly(true)
                                     .secure(false)// remember to true this
                                     .path("/")
-                                    .maxAge(60*10)
+                                    .maxAge(60*15)
                                     .sameSite("Lax")
                                     .build();
                             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, AccessCookie.toString())
@@ -181,5 +182,20 @@ public class AuthenticationController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .header(HttpHeaders.SET_COOKIE, refresh.toString())
                 .body(new JwtRes("Logged In"));
+    }
+
+    @PostMapping("/access")
+    public ResponseEntity<?> access(HttpServletRequest httpServletRequest){
+        if(httpServletRequest.getCookies() != null){
+            for(Cookie cookie: httpServletRequest.getCookies()){
+                if(cookie.getName().equals("jwt")){
+                    String accessToken = cookie.getValue();
+                    if (jwTutil.validateJwtToken(accessToken)){
+                        return ResponseEntity.ok().body("Ok");
+                    }
+                }
+            }
+        }
+       return ResponseEntity.badRequest().body("Incorrect Data");
     }
 }

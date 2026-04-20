@@ -20,12 +20,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 const username = ref('')
 const password = ref('')
 let msg = ref('')
 const router = useRouter()
+
 
 async function login(){
     const res = await fetch('/api/auth/login', {
@@ -37,17 +38,41 @@ async function login(){
             role: 'USER'
         })
     })
-    const data = await res.json()
 
     if(res.status === 200){
-        localStorage.setItem('jwt', data['token'])
-        localStorage.setItem('username', username)
-        router.push('/chats')
+        router.push('/main')
     } else {
         msg.value = 'Incorrect info'
     }
 
 }
 
+async function accessToken(){
+    const res = await fetch('/api/auth/access', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body : JSON.stringify({})
+        });
+        if(res.status != 200){
+            return await refreshToken()
+        }
+        return true
+}
+async function refreshToken(){
+    const res = await fetch('/api/auth/refresh', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body : JSON.stringify({})
+    });
+    if(res.status != 200){
+        return false;
+    }
+    return true;
+}
+onMounted(async () => {
+    if(await accessToken()) {
+        router.push('/main')
+    }
+})
 
 </script>
