@@ -62,7 +62,7 @@ public class AuthenticationController {
         String accessToken = jwTutil.generateJWTToken(dto.getUsername());
         ResponseCookie accesscookie = ResponseCookie.from("jwt", accessToken)
                 .httpOnly(true)
-                .secure(false)// remember to true this
+                .secure(true)// remember to true this
                 .path("/")
                 .maxAge(60*15)
                 .sameSite("Lax")
@@ -76,7 +76,7 @@ public class AuthenticationController {
         refreshRepository.save(tokens);
         ResponseCookie refreshcookie = ResponseCookie.from("refresh", refreshToken)
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(60*60*24)
                 .sameSite("Lax")
@@ -101,7 +101,7 @@ public class AuthenticationController {
         String token = jwTutil.generateJWTToken(userDetails.getUsername());
         ResponseCookie cookie = ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(false) // change this later
+                .secure(true) 
                 .path("/")
                 .maxAge(60*15)
                 .sameSite("Lax")
@@ -115,7 +115,7 @@ public class AuthenticationController {
         refreshRepository.save(tokens);
         ResponseCookie refreshcookie = ResponseCookie.from("refresh", refreshToken)
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(60*60*24)
                 .sameSite("Lax")
@@ -138,7 +138,7 @@ public class AuthenticationController {
                             String AccessToken = jwTutil.generateJWTToken(user);
                             ResponseCookie AccessCookie = ResponseCookie.from("jwt", AccessToken)
                                     .httpOnly(true)
-                                    .secure(false)// remember to true this
+                                    .secure(true)
                                     .path("/")
                                     .maxAge(60*15)
                                     .sameSite("Lax")
@@ -167,14 +167,14 @@ public class AuthenticationController {
         }
         ResponseCookie cookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(0)
                 .sameSite("Lax")
                 .build();
         ResponseCookie refresh = ResponseCookie.from("refresh", "")
                 .httpOnly(true)
-                .secure(false)
+                .secure(true)
                 .path("/")
                 .maxAge(0)
                 .sameSite("Lax")
